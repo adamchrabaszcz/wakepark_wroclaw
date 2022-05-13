@@ -1,0 +1,38 @@
+{% apply inline_css %}
+    <style>
+        table {
+            border-collapse: collapse;
+            border: none;
+        }
+        td {
+            padding-left:20px;
+        }
+        td:first-of-type {
+            padding-left: 0;
+            padding-right: 20px;
+            border-right: 1px dashed;
+        }
+    </style>
+    {% block email_content %}
+
+    {% endblock %}
+    {% block email_footer %}
+    <br>
+    <p>
+        Best Regards<br>
+        -----
+    </p>
+    <table>
+        <tr>
+            <td>
+                <img src="{{ email.image('@images/euroskimcup_small.png') }}" alt="Logo">
+            </td>
+            <td>
+                European Skimboarding Cup<br>
+                <a href="http://www.euroskimcup.com">www.euroskimcup.com</a><br>
+                <a href="mailto:hello@euroskimcup.com">hello@euroskimcup.com</a>
+            </td>
+        </tr>
+    </table>
+    {% endblock %}
+{% endapply %}

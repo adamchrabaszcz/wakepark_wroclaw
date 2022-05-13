@@ -1,0 +1,30 @@
+<div id="top">
+    <div id="carousel-generic" class="carousel slide" data-bs-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            {% set r = random(3) + 1 %}
+            {% for i in 1..4 %}
+                <li data-bs-target="#carousel-generic" data-bs-slide-to="{{ i - 1 }}" class="{{ i == r ? 'active' }}"></li>
+            {% endfor %}
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+            {% for i in 1..4 %}
+                <div class="carousel-item {{ i == r ? 'active' }}">
+                    <img src="{{ asset('build/images/' ~ i ~ '.jpg') }}" alt="">
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Controls -->
+        <a class="left carousel-control-prev" data-bs-target="#carousel-generic" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </a>
+        <a class="right carousel-control-next" data-bs-target="#carousel-generic" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </a>
+    </div>
+</div>

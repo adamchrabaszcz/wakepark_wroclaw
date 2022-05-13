@@ -1,0 +1,17 @@
+{% extends 'emails/email_base.html.twig' %}
+{% block email_content %}
+    <h2>Welcome {{ name }}!</h2>
+
+    <p>
+        You registered at the European Skimboarding Cup's website with the following email:
+    </p>
+    <p><code>{{ email.to[0].address }}</code></p>
+
+    <p>
+        You can now log in to your account.
+    </p>
+
+    <p>
+        To further use the website, your profile will need to be verified. You will be informed when this happens.
+    </p>
+{% endblock %}

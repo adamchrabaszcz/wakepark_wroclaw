@@ -1,0 +1,281 @@
+@import "~bootstrap/scss/bootstrap";
+@import url("//fonts.googleapis.com/css?family=Open+Sans");
+@import '~font-awesome';
+
+body{
+    font-family: 'Open Sans';
+    margin: 0;
+    padding: 0;
+    padding-top: 50px;
+}
+h1, h2, h3{
+    font-weight:500;
+}
+
+a:focus, a:hover {
+    color: #23527c;
+    text-decoration: underline;
+}
+#top{
+    margin-top:55px;
+    margin-bottom:55px;
+    width:100%;
+    overflow:hidden;
+}
+.carousel {
+    max-height: 400px;
+}
+.carousel-item img {
+    width:100%;
+    min-width:100%;
+    height: auto;
+}
+.division-header{
+    padding-top:8px;
+    padding-bottom:6px;
+    text-align:center;
+}
+.modal-dialog {width:600px;}
+.thumbnail {margin-bottom:6px;}
+.modal-backdrop.in {
+    -webkit-opacity: 0.95;
+    -moz-opacity: 0.95;
+    opacity: 0.95;
+    background-color: #333333;
+}
+.col-sm-2{
+    padding:0;
+}
+#clients .col-sm-2 {
+    float:none;
+    display:inline-block;
+    vertical-align:middle;
+    margin-right:-4px;
+}
+#clients .row{
+    margin-top:30px;
+    margin-bottom:30px;
+}
+#footer{
+    margin-bottom: 40px;
+}
+#footer img {
+    height: 50px;
+    width: auto;
+    margin: 20px auto auto;
+}
+hr{
+    margin-top:40px;
+    margin-bottom:40px;
+}
+mark{
+    background-color:#ececec;
+}
+.btn-youtube{
+    color: #fff;
+    background-color: #cc181e;
+    border-color: rgba(0,0,0,0.2);
+}
+.navbar-nav li a.nav-link {
+    line-height: 90px;
+    height: 90px;
+    padding-top: 0;
+}
+.map-container {
+    overflow:hidden;
+    padding-bottom:56.25%;
+    position:relative;
+    height:0;
+}
+.map-container iframe{
+    left:0;
+    top:0;
+    height:100%;
+    width:100%;
+    position:absolute;
+}
+
+.navbar-right{
+    margin-left: auto;
+}
+
+/*Now the CSS*/
+.tree * {margin: 0; padding: 0;}
+
+.tree ul {
+    padding-top: 20px; position: relative;
+
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+}
+
+.tree li {
+    float: left; text-align: center;
+    list-style-type: none;
+    position: relative;
+    padding: 20px 5px 0 5px;
+
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+}
+
+/*We will use ::before and ::after to draw the connectors*/
+
+.tree li::before, .tree li::after{
+    content: '';
+    position: absolute; top: 0; right: 50%;
+    border-top: 1px solid #ccc;
+    width: 50%; height: 20px;
+}
+.tree li::after{
+    right: auto; left: 50%;
+    border-left: 1px solid #ccc;
+}
+
+/*We need to remove left-right connectors from elements without
+any siblings*/
+.tree li:only-child::after, .tree li:only-child::before {
+    display: none;
+}
+
+/*Remove space from the top of single children*/
+.tree li:only-child{ padding-top: 0;}
+
+/*Remove left connector from first child and
+right connector from last child*/
+.tree li:first-child::before, .tree li:last-child::after{
+    border: 0 none;
+}
+/*Adding back the vertical connector to the last nodes*/
+.tree li:last-child::before{
+    border-right: 1px solid #ccc;
+    border-radius: 0 5px 0 0;
+    -webkit-border-radius: 0 5px 0 0;
+    -moz-border-radius: 0 5px 0 0;
+}
+.tree li:first-child::after{
+    border-radius: 5px 0 0 0;
+    -webkit-border-radius: 5px 0 0 0;
+    -moz-border-radius: 5px 0 0 0;
+}
+
+/*Time to add downward connectors from parents*/
+.tree ul ul::before{
+    content: '';
+    position: absolute; top: 0; left: 50%;
+    border-left: 1px solid #ccc;
+    width: 0; height: 20px;
+}
+
+.tree li p{
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #666;
+    font-family: arial, verdana, tahoma;
+    /*    font-size: 10px;*/
+    display: inline-block;
+
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+}
+
+@media screen and (max-width: 768px){
+    .tree li p{
+        font-size:10px;
+    }
+}
+
+/*Time for some hover effects*/
+/*We will apply the hover effect the the lineage of the element also*/
+.tree li p:hover, .tree li p:hover+ul li p {
+    background: #c8e4f8; color: #000; border: 1px solid #94a0b4;
+}
+
+/*Conneector styles on hover*/
+.tree li p:hover+ul li::after,
+.tree li p:hover+ul li::before,
+.tree li p:hover+ul::before,
+.tree li p:hover+ul ul::before{
+    border-color:  #94a0b4;
+}
+
+.bigtree{
+    min-height:320px;
+}
+
+.agenda ol { counter-reset: item }
+.agenda li { display: block }
+.agenda li:before { content: counters(item, ".") " "; counter-increment: item }
+
+#top-link-block {
+    bottom: 80px;
+    position: -webkit-sticky;
+    position: sticky;
+}
+#top-link-block a {
+    float:right;
+    margin-right: 80px;
+    margin-bottom: 20px;
+}
+h2.contests  {
+    margin-top:10px;
+    margin-bottom:20px;
+}
+
+.grey a{
+    color: #ccc;
+}
+
+.podium2 td{
+    background-color: rgba(223,240,216,0.7);
+}
+
+.podium3 td{
+    background-color: rgba(223,240,216,0.4);
+}
+
+/* Dates */
+.agenda .agenda-date { width: 170px; }
+.agenda .agenda-date .dayofmonth {
+    width: 40px;
+    font-size: 36px;
+    line-height: 36px;
+    float: left;
+    text-align: right;
+    margin-right: 10px;
+}
+.agenda .agenda-date .shortdate {
+    font-size: 0.75em;
+}
+
+.agenda .disabled{
+    color:#ccc;
+}
+
+
+/* Times */
+.agenda .agenda-time { width: 140px; }
+
+
+/* Events */
+.agenda .agenda-events {  }
+.agenda .agenda-events .agenda-event {  }
+
+.attachment{
+    display: block !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin-bottom:10px;
+}
+
+.navbar-brand img {
+    max-width: 200px !important;
+}

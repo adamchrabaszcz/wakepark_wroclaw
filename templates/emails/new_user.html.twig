@@ -1,0 +1,13 @@
+{% extends 'emails/email_base.html.twig' %}
+{% block email_content %}
+    <h2>New user at European Skimboarding Cup!</h2>
+
+    <p>
+        New user registered at the European Skimboarding Cup's website with the following email:
+    </p>
+    <p><code>{{ user_email }}</code></p>
+
+    <p>
+        You need to verify the user.
+    </p>
+{% endblock %}

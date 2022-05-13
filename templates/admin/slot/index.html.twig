@@ -1,0 +1,16 @@
+{% extends '@!EasyAdmin/crud/index.html.twig' %}
+
+{% block table_footer %}
+    <tr>
+        <td colspan="2"/>
+        <td>Total</td>
+        <td>
+            {% set total_income = 0 %}
+            {% for entity in entities %}
+                {% set total_income = total_income + entity.instance.price %}
+            {% endfor %}
+            {{ total_income }}
+        </td>
+        <td colspan="3"/>
+    </tr>
+{% endblock table_footer %}

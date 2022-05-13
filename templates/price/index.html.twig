@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Ceny
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="page-header">
+                <h1>
+                    Ceny
+                </h1>
+            </div>
+            <hr>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <h4>Ceny jednorazowych wejść</h4>
+                <ul>
+                    <li>Pon-Pt do 16 - 40 PLN<sup>*</sup></li>
+                    <li>Pon-Pt od 16 - 45 PLN<sup>*</sup></li>
+                    <li>Weekendy - 45 PLN<sup>*</sup></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h4>Karnety</h4>
+                <ul>
+                    <li>10 wejść - 400 PLN<sup>*</sup></li>
+                    <li>20 wejść - 750 PLN<sup>*</sup></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h4>Dodatki</h4>
+                <ul>
+                    <li>Wakeboard standard - 15 PLN<sup>*</sup></li>
+                    <li>Wakeboard pro - 25 PLN<sup>*</sup></li>
+                    <li>Pianka - 10 PLN<sup>*</sup></li>
+                    <li>SUP 0,5h - 30 PLN</li>
+                    <li>SUP 1h - 50 PLN</li>
+                </ul>
+            </div>
+        </div>
+        <sup>*</sup> Cena za slot 15min
+    </div>
+    <br>
+{% endblock %}

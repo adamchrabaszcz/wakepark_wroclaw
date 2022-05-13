@@ -1,0 +1,27 @@
+{% extends '@!EasyAdmin/page/content.html.twig' %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-6">
+            {{ render_chart(chartSlots) }}
+        </div>
+        <div class="col-md-6">
+            {{ render_chart(chartTotalEarnings) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            {{ render_chart(chartSlotsMonth) }}
+        </div>
+        <div class="col-md-6">
+            {{ render_chart(chartTotalEarningsMonth) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {{ render_chart(chartTotalEarningsYear) }}
+        </div>
+    </div>
+
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}

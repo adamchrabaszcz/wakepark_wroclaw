@@ -1,0 +1,176 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div id="calendar-holder"></div>
+            </div>
+            <div class="col-md-4">
+                <h2>Zapisz się</h2>
+                {% if rider %}
+                    {{ form_start(form) }}
+                    {{ form_row(form.rider) }}
+                    <br>
+                    <div class="row">
+                        <h5 id="formSlotError" class="text-danger">Ten slot jest już zajęty</h5>
+                        <div class="col-md-6">
+                            {{ form_row(form.beginAt) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(form.endAt) }}
+                        </div>
+                    </div>
+                    <br>
+                    {{ form_row(form.options) }}
+
+                    <br>
+                    <button type="submit" class="btn btn-md btn-primary" id="add_slot">Zapisz się</button>
+                    {{ form_end(form) }}
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="btn btn-md btn-primary">Zaloguj się</a>
+                {% endif %}
+                <br>
+                <h5>
+                    Ceny
+                </h5>
+                <ul>
+                    <li>Pon-Pt do 16 - 40 PLN<sup>*</sup></li>
+                    <li>Pon-Pt od 16 - 45 PLN<sup>*</sup></li>
+                    <li>Weekendy - 45 PLN<sup>*</sup></li>
+                </ul>
+                <sup>*</sup> Cena za slot 15min
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.css">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.js"></script>
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+
+            var calendarEl = document.getElementById('calendar-holder');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                defaultView: 'timeGridWeek',
+                eventSources: [
+                    {
+                        url: "{{ path('fc_load_events') }}",
+                        method: "POST",
+                        extraParams: {
+                            filters: JSON.stringify({})
+                        },
+                        failure: () => {
+                            // alert("There was an error while fetching FullCalendar!");
+                        },
+                    },
+                ],
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay',
+                },
+                plugins: [ 'interaction', 'dayGrid', 'timeGrid' ], // https://fullcalendar.io/docs/plugin-index
+                timeZone: 'UTC',
+                locale: 'pl',
+                businessHours: [ // specify an array instead
+                    {
+                        daysOfWeek: [ 1, 2, 3, 4, 5 ],
+                        startTime: '09:00',
+                        endTime: '19:00'
+                    },
+                    {
+                        daysOfWeek: [ 6, 0 ],
+                        startTime: '10:00',
+                        endTime: '20:00'
+                    }
+                ],
+                minTime: '08:00:00',
+                maxTime: '20:00:00',
+                firstDay: 1,
+                editable: false,
+            });
+
+            calendar.render();
+
+            function checkSlots() {
+                slotError.hidden = true;
+                currentSlotStartDateTime = slotDateStart.value + 'T' + slotTimeHourStart.value.padStart(2, 0) + ':' + slotTimeMinuteStart.value.padStart(2, 0) + ':00.000Z'
+                currentSlotEndDateTime = slotDateEnd.value + 'T' + slotTimeHourEnd.value.padStart(2, 0) + ':' + slotTimeMinuteEnd.value.padStart(2, 0) + ':00.000Z'
+                events = calendar.getEvents();
+                for (var i = 0; i < events.length; i++) {
+                    if (currentSlotStartDateTime == events[i].start.toISOString()) {
+                        slotError.hidden = false;
+                        return false;
+                    }
+                    if (
+                        currentSlotStartDateTime < events[i].start.toISOString()
+                        && currentSlotEndDateTime > events[i].start.toISOString()
+                    ) {
+                        slotError.hidden = false;
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            {% if rider %}
+                var slotDateStart = document.getElementById('slot_beginAt_date');
+                var slotDateEnd = document.getElementById('slot_endAt_date');
+                var slotTimeHourStart = document.getElementById('slot_beginAt_time_hour');
+                var slotTimeMinuteStart = document.getElementById('slot_beginAt_time_minute');
+                var slotTimeHourEnd = document.getElementById('slot_endAt_time_hour');
+                var slotTimeMinuteEnd = document.getElementById('slot_endAt_time_minute');
+                var addSlotForm = document.getElementsByName('slot')[0];
+                var slotError = document.getElementById('formSlotError');
+
+                slotError.hidden = true;
+
+                function updateTime() {
+                    if (slotTimeMinuteStart.selectedIndex == 3) {
+                        slotTimeHourEnd.selectedIndex = slotTimeHourStart.selectedIndex + 1;
+                        slotTimeMinuteEnd.selectedIndex = 0;
+                    } else {
+                        slotTimeHourEnd.value = slotTimeHourStart.value;
+                        slotTimeMinuteEnd.selectedIndex = slotTimeMinuteStart.selectedIndex + 1;
+                    }
+                    checkSlots();
+                }
+
+                slotDateStart.onchange = function() {
+                    slotDateEnd.value = slotDateStart.value;
+                    updateTime();
+                }
+
+                slotTimeHourStart.onchange = function() {
+                    updateTime();
+                }
+
+                slotTimeMinuteStart.onchange = function() {
+                    updateTime();
+                }
+
+                slotTimeMinuteEnd.onchange = function() {
+                    checkSlots();
+                }
+
+                addSlotForm.onsubmit = function() {
+                    return checkSlots();
+                }
+            {% endif %}
+        });
+    </script>
+{% endblock %}

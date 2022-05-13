@@ -1,0 +1,14 @@
+<div id="top-link-block" style="display:none;">
+    <a href="#top" class="btn btn-outline-secondary"  onclick="$('html,body').animate({scrollTop:0},'slow');return false;">
+        <i class="fa fa-chevron-up"></i> Back to Top
+    </a>
+</div>
+<div class="clearfix"></div>
+<div class="container">
+    <div class="row text-center" id="footer">
+        <hr>
+        <p><span class="fa fa-copyright"></span> Copyright {{ date()|format_datetime(pattern="Y") }} Wakepark Wrocław.</p>
+        <img alt="wakepark wroclaw" src="{{ asset('build/images/wakepark_wroclaw.png') }}">
+    </div>
+</div>
+

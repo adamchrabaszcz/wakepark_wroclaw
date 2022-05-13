@@ -1,0 +1,49 @@
+<nav class="navbar navbar-light fixed-top navbar-expand-lg bg-light">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="{{ path("home") }}">
+                <img alt="euroskimcup" src="{{ asset('build/images/wakepark_wroclaw.png') }}">
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="nav navbar-nav change-height">
+                <li class="nav-item"><a class="nav-link" href="{{ path("app_slot_index") }}">Rezerwacje wyciągu</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path("price") }}">Cennik</a></li>
+                <li class="nav-item"><a class="nav-link" href="{#{{ path("calendar") }}#}">Regulamin</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path("contact") }}">Kontakt</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="pull-right nav-item">
+                    <a class="nav-link" href="http://www.facebook.com/wakepark.wroclaw" target="_blank">
+                        <span class="fa fa-facebook"></span>
+                    </a>
+                </li>
+                <li class="pull-right nav-item">
+                    <a class="nav-link" href="http://www.instagram.com/wroclaw_wakepark" target="_blank">
+                        <span class="fa fa-instagram"></span>
+                    </a>
+                </li>
+                <li class="pull-right nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="fa fa-user"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-sm-end" aria-labelledby="navbarDropdown">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li><a class="dropdown-item small" href="{{ path("admin") }}"><span class="fa fa-cog"></span> Panel admina</a></li>
+                        {% endif %}
+                        {% if is_granted('ROLE_USER') %}
+                            <li><a class="dropdown-item small" href="{{ path("app_user_edit") }}"><span class="fa fa-user"></span> Mój profil</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item small" href="{{ path("app_logout") }}"><span class="fa fa-sign-out"></span> Wyloguj się</a></li>
+                        {% else %}
+                            <li><a class="dropdown-item small" href="{{ path("app_login") }}"><span class="fa fa-sign-in"></span> Zaloguj się / Zarejestruj się</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

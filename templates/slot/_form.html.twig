@@ -1,0 +1,17 @@
+{{ form_start(form) }}
+{{ form_row(form.rider) }}
+<br>
+<div class="row">
+    <div class="col-md-6">
+        {{ form_row(form.beginAt) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.endAt) }}
+    </div>
+</div>
+<br>
+{{ form_row(form.options) }}
+
+<br>
+<button type="submit" class="btn btn-md btn-primary" id="add_slot">Zapisz się</button>
+{{ form_end(form) }}

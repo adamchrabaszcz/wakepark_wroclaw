@@ -5,8 +5,31 @@
  * (and its CSS file) in your base layout (base.html.twig).
  */
 
-// any CSS you import will output into a single css file (app.css in this case)
-import './styles/app.css';
+// any CSS you import will output into a single css file (app.scss in this case)
+import './styles/app.scss';
 
 // start the Stimulus application
 import './bootstrap';
+
+const $ = require('jquery');
+// this "modifies" the jquery module: adding behavior to it
+// the bootstrap module doesn't export/return anything
+require('bootstrap');
+
+// create global $ and jQuery variables
+global.$ = global.jQuery = $;
+
+$(document).ready(function ($) {
+
+    $(window).on("hashchange", function () {
+        window.scrollTo(window.scrollX, window.scrollY - 100);
+    });
+
+    $(document).on("scroll", function () {
+        if ($(this).scrollTop() > 400) {
+            $('#top-link-block').show();
+        } else {
+            $('#top-link-block').hide();
+        }
+    });
+});

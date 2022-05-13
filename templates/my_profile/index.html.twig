@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    My Profile
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="page-header">
+                <h1>
+                    My Profile
+                </h1>
+            </div>
+            <hr>
+        </div>
+        {% if form %}
+            <div class="row">
+                {{ form_start(form) }}
+                {{ form_row(form.firstname) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.nickname) }}
+                {{ form_row(form.country) }}
+                {{ form_row(form.www) }}
+                {{ form_row(form.fb) }}
+                {{ form_row(form.instagram) }}
+                {{ form_row(form.twitter) }}
+                {{ form_row(form.sponsors) }}
+                <br>
+                <button type="submit" class="btn btn-md btn-primary">Update</button>
+                {{ form_end(form) }}
+            </div>
+        {% else %}
+            <p class="lead">
+                Profile awaiting verification.
+            </p>
+        {% endif %}
+    </div>
+    <br><br>
+{% endblock %}
