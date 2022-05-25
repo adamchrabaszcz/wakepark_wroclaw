@@ -1,5 +1,23 @@
 {% extends '@!EasyAdmin/crud/index.html.twig' %}
 
+{% block main %}
+    <div class="accordion" id="accordionCalendar">
+        <div class="accordion-item" style="background-color: #fff !important;">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Calendar
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionCalendar">
+                <div class="accordion-body">
+                    <div id="calendar-holder"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ parent() }}
+{% endblock %}
+
 {% block table_footer %}
     <tr>
         <td colspan="2"/>
@@ -14,3 +32,19 @@
         <td colspan="3"/>
     </tr>
 {% endblock table_footer %}
+
+{% block configured_javascripts %}
+    {{ parent() }}
+    {{ include('slot/_calendar_js_headers.html.twig') }}
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+
+            {{ include('slot/_calendar_js.html.twig') }}
+        });
+    </script>
+{% endblock %}
+
+{% block configured_stylesheets %}
+    {{ parent() }}
+    {{ include('slot/_calendar_css.html.twig') }}
+{% endblock %}

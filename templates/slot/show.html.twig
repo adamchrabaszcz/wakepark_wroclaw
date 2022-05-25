@@ -16,15 +16,11 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ slot.id }}</td>
-            </tr>
-            <tr>
-                <th>BeginAt</th>
+                <th>Start</th>
                 <td>{{ slot.beginAt ? slot.beginAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>EndAt</th>
+                <th>Koniec</th>
                 <td>{{ slot.endAt ? slot.endAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>
@@ -32,7 +28,8 @@
 
     <a href="{{ path('app_slot_index') }}">Wróć do kalendarza</a>
     <br><br>
-    {% if (slot.rider == app.user) %}
+
+    {% if (slot.rider.user == user) %}
         {{ include('slot/_delete_form.html.twig') }}
     {% endif %}
 </div>

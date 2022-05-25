@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Option;
+use App\Entity\Rider;
 use App\Entity\Slot;
 use App\Entity\User;
 use App\Repository\SlotRepository;
@@ -187,6 +188,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Options', 'fa fa-sitemap', Option::class),
 
             MenuItem::section('Riders'),
+            MenuItem::linkToCrud('Riders', 'fa fa-user', Rider::class),
             MenuItem::linkToCrud('Users', 'fa fa-user', User::class)
                 ->setPermission('ROLE_ADMIN'),
         ];

@@ -21,6 +21,7 @@ class RegistrationFormType extends AbstractType
             ->add('email', EmailType::class)
             ->add('firstName')
             ->add('surname')
+            ->add('phone')
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
@@ -38,6 +39,7 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('acceptedRegulations')
 //            ->add('captcha', CaptchaType::class)
         ;
     }

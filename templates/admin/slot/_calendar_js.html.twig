@@ -1,0 +1,33 @@
+{{ include('slot/_calendar_js_headers.html.twig') }}
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+
+            {{ include('slot/_calendar_js.html.twig') }}
+
+            var addCollectionButton = document.getElementsByClassName('field-collection-add-button')[0];
+            var riderCollection = document.getElementsByClassName('ea-form-collection-items')[0];
+            var assocRider = document.getElementsByClassName('field-association')[0];
+
+            addCollectionButton.onclick = function() {
+                assocRider.hidden = true;
+                addCollectionButton.hidden = true;
+            }
+
+            function pollDOM () {
+                var el = document.getElementsByClassName('field-collection-delete-button');
+
+                if (el.length > 0) {
+                    el[0].onclick = function() {
+                        assocRider.hidden = false;
+                        addCollectionButton.hidden = false;
+                    }
+                }
+                setTimeout(pollDOM, 300); // try again in 300 milliseconds
+            }
+
+            pollDOM();
+
+        });
+    </script>
+

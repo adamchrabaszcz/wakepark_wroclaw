@@ -1,17 +1,14 @@
 {% extends 'emails/email_base.html.twig' %}
 {% block email_content %}
-    <h2>Welcome {{ name }}!</h2>
+    <h2>Dzien dobry {{ name }}!</h2>
 
     <p>
-        You registered at the European Skimboarding Cup's website with the following email:
+        Zarejestrowaliśmy Cię w systemie rezerwacji wyciągu Wake Park Wrocław na poniższy email:
     </p>
     <p><code>{{ email.to[0].address }}</code></p>
 
     <p>
-        You can now log in to your account.
+        Możesz od teraz zalogować się na swoje konto i rezerwować sloty na wyciągu.
     </p>
 
-    <p>
-        To further use the website, your profile will need to be verified. You will be informed when this happens.
-    </p>
 {% endblock %}

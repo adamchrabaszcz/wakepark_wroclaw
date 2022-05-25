@@ -8,9 +8,11 @@ use App\Entity\Slot;
 use App\Form\SlotType;
 use App\Repository\SlotRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -32,7 +34,7 @@ class SlotController extends AbstractController
     public function calendar(EntityManagerInterface $entityManager): Response
     {
         $slot = new Slot();
-        $rider = $this->getUser();
+        $rider = $this->getUser() ? $this->getUser()->getRider() : null;
 
         if ($rider) {
             $slot->setRider($rider);
@@ -51,16 +53,50 @@ class SlotController extends AbstractController
     /**
      * @Route("/new", name="app_slot_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager, SlotPriceCalculator $slotPriceCalculator): Response
-    {
+    public function new(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        SlotPriceCalculator $slotPriceCalculator,
+        MailerInterface $mailer,
+        string $notificationEmail
+    ): Response {
         $slot = new Slot();
         $form = $this->createForm(SlotType::class, $slot);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            $rider = $user ? $user->getRider() : null;
+
+            if ($rider) {
+                $slot->setRider($rider);
+            }
+
             $slot->setPrice($slotPriceCalculator->calculateSlotPrice($slot));
             $entityManager->persist($slot);
             $entityManager->flush();
+
+            $email = (new TemplatedEmail())
+                ->to($user->getEmail())
+                ->subject('Zarezerwowano pływanie na Wakepark Wrocław')
+                ->htmlTemplate('emails/slot_registration.html.twig')
+                ->context([
+                    'name' => $user->getFirstname(),
+                    'slot' => $slot
+                ]);
+
+            $mailer->send($email);
+
+            $adminEmail = (new TemplatedEmail())
+                ->to($notificationEmail)
+                ->subject('Zarezerwowano slot na pływanie')
+                ->htmlTemplate('emails/slot_registration_admin.html.twig')
+                ->context([
+                    'user' => $user,
+                    'slot' => $slot
+                ]);
+
+            $mailer->send($adminEmail);
         }
 
         return $this->redirectToRoute('app_slot_index', [], Response::HTTP_SEE_OTHER);
@@ -73,6 +109,7 @@ class SlotController extends AbstractController
     {
         return $this->render('slot/show.html.twig', [
             'slot' => $slot,
+            'user' => $this->getUser()
         ]);
     }
 
@@ -83,7 +120,7 @@ class SlotController extends AbstractController
     {
         if (
             $this->isCsrfTokenValid('delete'.$slot->getId(), $request->request->get('_token'))
-            && $this->getUser() == $slot->getRider()
+            && $this->getUser()->getRider() == $slot->getRider()
         ) {
             $entityManager->remove($slot);
             $entityManager->flush();

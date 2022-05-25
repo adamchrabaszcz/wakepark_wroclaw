@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Rider;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -9,21 +10,21 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class UserCrudController extends AbstractCrudController
+class RiderCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return User::class;
+        return Rider::class;
     }
+
 
     public function configureFields(string $pageName): iterable
     {
         return [
             TextField::new('firstName'),
             TextField::new('surname'),
-            EmailField::new('email'),
             TextField::new('phone'),
-            AssociationField::new('rider')
+            AssociationField::new('user')
         ];
     }
 

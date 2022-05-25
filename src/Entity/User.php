@@ -39,11 +39,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity=Slot::class, mappedBy="rider")
-     */
-    private $slots;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $firstName;
@@ -57,6 +52,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $phone;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Rider::class, inversedBy="user", cascade={"persist", "remove"})
+     */
+    private $rider;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $acceptedRegulations;
 
     public function __construct()
     {
@@ -152,36 +157,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    /**
-     * @return Collection<int, Slot>
-     */
-    public function getSlots(): Collection
-    {
-        return $this->slots;
-    }
-
-    public function addSlot(Slot $slot): self
-    {
-        if (!$this->slots->contains($slot)) {
-            $this->slots[] = $slot;
-            $slot->setRider($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSlot(Slot $slot): self
-    {
-        if ($this->slots->removeElement($slot)) {
-            // set the owning side to null (unless already changed)
-            if ($slot->getRider() === $this) {
-                $slot->setRider(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getFirstName(): ?string
     {
         return $this->firstName;
@@ -206,11 +181,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getShort(): string
-    {
-        return sprintf('%s.%s.', substr($this->getFirstName(), 0, 1), substr($this->getSurname(), 0, 1));
-    }
-
     public function __toString()
     {
         return sprintf('%s %s', $this->getFirstName(), $this->getSurname());
@@ -224,6 +194,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhone(string $phone): self
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getRider(): ?Rider
+    {
+        return $this->rider;
+    }
+
+    public function setRider(?Rider $rider): self
+    {
+        $this->rider = $rider;
+
+        return $this;
+    }
+
+    public function getAcceptedRegulations(): ?bool
+    {
+        return $this->acceptedRegulations;
+    }
+
+    public function setAcceptedRegulations(?bool $acceptedRegulations): self
+    {
+        $this->acceptedRegulations = $acceptedRegulations;
 
         return $this;
     }

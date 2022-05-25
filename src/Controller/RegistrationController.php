@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Factory\RiderFactory;
 use App\Form\RegistrationFormType;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,6 +38,7 @@ class RegistrationController extends AbstractController
                 )
             );
             $user->setRoles(['ROLE_USER']);
+            $user->setRider(RiderFactory::createFromUser($user));
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
@@ -44,7 +46,7 @@ class RegistrationController extends AbstractController
 
             $email = (new TemplatedEmail())
                 ->to($user->getEmail())
-                ->subject('Thank you for registering at European Skimboarding Cup')
+                ->subject('Witamy w systemie Wakepark Wrocław')
                 ->htmlTemplate('emails/register.html.twig')
                 ->context([
                     'name' => $user->getFirstname(),
@@ -54,7 +56,7 @@ class RegistrationController extends AbstractController
 
             $adminEmail = (new TemplatedEmail())
                 ->to($notificationEmail)
-                ->subject('New user at European Skimboarding Cup')
+                ->subject('Nowy user na Wakepark Wrocław')
                 ->htmlTemplate('emails/new_user.html.twig')
                 ->context([
                     'user_email' => $user->getEmail(),

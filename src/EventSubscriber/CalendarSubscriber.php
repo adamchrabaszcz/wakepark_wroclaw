@@ -2,24 +2,33 @@
 
 namespace App\EventSubscriber;
 
+use App\Controller\Admin\SlotCrudController;
 use App\Repository\SlotRepository;
 use CalendarBundle\CalendarEvents;
 use CalendarBundle\Entity\Event;
 use CalendarBundle\Event\CalendarEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Security;
 
 class CalendarSubscriber implements EventSubscriberInterface
 {
     private $slotRepository;
     private $router;
+    private AdminUrlGenerator $adminUrlGenerator;
+    private Security $security;
 
     public function __construct(
         SlotRepository        $slotRepository,
-        UrlGeneratorInterface $router
+        UrlGeneratorInterface $router,
+        AdminUrlGenerator $adminUrlGenerator,
+        Security $security
     ) {
         $this->slotRepository = $slotRepository;
         $this->router = $router;
+        $this->adminUrlGenerator = $adminUrlGenerator;
+        $this->security = $security;
     }
 
     public static function getSubscribedEvents()
@@ -61,15 +70,17 @@ class CalendarSubscriber implements EventSubscriberInterface
              * and: https://github.com/fullcalendar/fullcalendar/blob/master/src/core/options.ts
              */
 
-//            $slotEvent->setOptions([
-//                'backgroundColor' => 'gray',
-//                'borderColor' => 'gray',
-//            ]);
             $slotEvent->addOption(
                 'url',
-                $this->router->generate('app_slot_show', [
-                    'id' => $slot->getId(),
-                ])
+                $this->security->isGranted('ROLE_ADMIN', $this->security->getUser())
+                    ? $this->adminUrlGenerator
+                        ->setController(SlotCrudController::class)
+                        ->setAction('edit')
+                        ->setEntityId($slot->getId())
+                        ->generateUrl()
+                    : $this->router->generate('app_slot_show', [
+                        'id' => $slot->getId(),
+                    ])
             );
 
             // finally, add the event to the CalendarEvent to fill the calendar

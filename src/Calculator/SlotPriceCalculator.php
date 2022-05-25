@@ -22,9 +22,13 @@ class SlotPriceCalculator
 
         $slotCount = abs($slot->getEndAt()->getTimestamp() - $slot->getBeginAt()->getTimestamp()) / 60 / 15;
 
-        foreach ($slot->getOptions() as $option) {
-            $slotPrice += $option->getPrice();
+        if ($slotCount >= 4) {
+            $slotPrice -= $this->prices['exclusiveDiscount'];
         }
+
+//        foreach ($slot->getOptions() as $option) {
+//            $slotPrice += $option->getPrice();
+//        }
 
         return $slotPrice * $slotCount;
     }

@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    My Profile
+    Mój profil
 {% endblock %}
 
 {% block body %}
@@ -9,7 +9,7 @@
         <div class="row">
             <div class="page-header">
                 <h1>
-                    My Profile
+                    Mój profil
                 </h1>
             </div>
             <hr>
@@ -17,8 +17,8 @@
         {% if form %}
             <div class="row">
                 {{ form_start(form) }}
-                {{ form_row(form.firstname) }}
-                {{ form_row(form.name) }}
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.surname) }}
                 {{ form_row(form.nickname) }}
                 {{ form_row(form.country) }}
                 {{ form_row(form.www) }}
@@ -27,7 +27,7 @@
                 {{ form_row(form.twitter) }}
                 {{ form_row(form.sponsors) }}
                 <br>
-                <button type="submit" class="btn btn-md btn-primary">Update</button>
+                <button type="submit" class="btn btn-md btn-primary">Aktualizuj</button>
                 {{ form_end(form) }}
             </div>
         {% else %}

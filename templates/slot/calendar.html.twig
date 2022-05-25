@@ -10,7 +10,6 @@
                 <h2>Zapisz się</h2>
                 {% if rider %}
                     {{ form_start(form) }}
-                    {{ form_row(form.rider) }}
                     <br>
                     <div class="row">
                         <h5 id="formSlotError" class="text-danger">Ten slot jest już zajęty</h5>
@@ -47,70 +46,26 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.css">
+    {{ include('slot/_calendar_css.html.twig') }}
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@4.1.0/main.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.js"></script>
+
+    {{ include('slot/_calendar_js_headers.html.twig') }}
 
     <script type="text/javascript">
+
         document.addEventListener('DOMContentLoaded', () => {
 
-            var calendarEl = document.getElementById('calendar-holder');
-
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                defaultView: 'timeGridWeek',
-                eventSources: [
-                    {
-                        url: "{{ path('fc_load_events') }}",
-                        method: "POST",
-                        extraParams: {
-                            filters: JSON.stringify({})
-                        },
-                        failure: () => {
-                            // alert("There was an error while fetching FullCalendar!");
-                        },
-                    },
-                ],
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay',
-                },
-                plugins: [ 'interaction', 'dayGrid', 'timeGrid' ], // https://fullcalendar.io/docs/plugin-index
-                timeZone: 'UTC',
-                locale: 'pl',
-                businessHours: [ // specify an array instead
-                    {
-                        daysOfWeek: [ 1, 2, 3, 4, 5 ],
-                        startTime: '09:00',
-                        endTime: '19:00'
-                    },
-                    {
-                        daysOfWeek: [ 6, 0 ],
-                        startTime: '10:00',
-                        endTime: '20:00'
-                    }
-                ],
-                minTime: '08:00:00',
-                maxTime: '20:00:00',
-                firstDay: 1,
-                editable: false,
-            });
-
-            calendar.render();
+            {{ include('slot/_calendar_js.html.twig') }}
 
             function checkSlots() {
                 slotError.hidden = true;
                 currentSlotStartDateTime = slotDateStart.value + 'T' + slotTimeHourStart.value.padStart(2, 0) + ':' + slotTimeMinuteStart.value.padStart(2, 0) + ':00.000Z'
                 currentSlotEndDateTime = slotDateEnd.value + 'T' + slotTimeHourEnd.value.padStart(2, 0) + ':' + slotTimeMinuteEnd.value.padStart(2, 0) + ':00.000Z'
                 events = calendar.getEvents();
+
                 for (var i = 0; i < events.length; i++) {
                     if (currentSlotStartDateTime == events[i].start.toISOString()) {
                         slotError.hidden = false;

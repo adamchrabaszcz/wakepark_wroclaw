@@ -21,7 +21,7 @@ class Slot
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="slots")
+     * @ORM\ManyToOne(targetEntity=Rider::class, inversedBy="slots", cascade={"persist"})
      */
     private $rider;
 
@@ -55,14 +55,28 @@ class Slot
         return $this->id;
     }
 
-    public function getRider(): ?User
+    public function getRider(): ?Rider
     {
         return $this->rider;
     }
 
-    public function setRider(?User $rider): self
+    public function setRider(?Rider $rider): self
     {
         $this->rider = $rider;
+
+        return $this;
+    }
+
+    public function getNewRider(): ?array
+    {
+        return [];
+    }
+
+    public function setNewRider(?array $rider): self
+    {
+        if (! empty($rider)) {
+            $this->rider = array_values($rider)[0];
+        }
 
         return $this;
     }
@@ -145,5 +159,16 @@ class Slot
     public function getEndAtTime(): ?string
     {
         return $this->getEndAt() ? $this->getEndAt()->format('H:i') : null;
+    }
+
+    public function getFullPrice(): ?int
+    {
+        $price = $this->getPrice();
+
+        foreach ($this->getOptions() as $option) {
+            $price += $option->getPrice();
+        }
+
+        return $price;
     }
 }

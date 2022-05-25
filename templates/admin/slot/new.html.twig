@@ -1,0 +1,22 @@
+{% extends '@!EasyAdmin/crud/new.html.twig' %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-6">
+            {% block new_form %}
+                {{ form(new_form) }}
+            {% endblock new_form %}
+        </div>
+        <div class="col-md-6"><div id="calendar-holder"></div></div>
+    </div>
+{% endblock %}
+
+{% block configured_javascripts %}
+    {{ parent() }}
+    {{ include('admin/slot/_calendar_js.html.twig') }}
+{% endblock %}
+
+{% block configured_stylesheets %}
+    {{ parent() }}
+    {{ include('slot/_calendar_css.html.twig') }}
+{% endblock %}

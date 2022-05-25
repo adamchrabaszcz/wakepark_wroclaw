@@ -7,7 +7,7 @@
     <div class="row">
         <div class="page-header">
             <h1>
-                Register
+                Rejestracja
             </h1>
         </div>
         <hr>
@@ -38,11 +38,43 @@
                 class: 'form-control'
             }
         }) }}
+        {{ form_row(registrationForm.phone, {
+            label: 'Telefon',
+            attr: {
+                class: 'form-control'
+            }
+        }) }}
+        <br>
+        Akceptacja regulaminu <a href="{{ path('app_regulations') }}">(Regulamin)</a>:
+        {{ form_row(registrationForm.acceptedRegulations, {
+            label: ' ',
+        }) }}
 {#        {{ form_row(registrationForm.captcha) }}#}
         <br>
-        <button type="submit" class="btn btn-md btn-primary">Zarejestruj</button>
+        <button type="submit" class="btn btn-md btn-primary" id="submitButton">Zarejestruj</button>
     {{ form_end(registrationForm) }}
     </div>
 </div>
     <br><br>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+
+            var regulationsCheck = document.getElementById('registration_form_acceptedRegulations');
+            var button = document.getElementById('submitButton');
+
+            button.hidden = true;
+
+            regulationsCheck.onchange = function() {
+                if (regulationsCheck.checked == true) {
+                    button.hidden = false;
+                } else {
+                    button.hidden = true;
+                }
+            }
+        });
+    </script>
 {% endblock %}

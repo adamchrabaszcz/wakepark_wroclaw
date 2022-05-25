@@ -1,0 +1,23 @@
+{% extends 'emails/email_base.html.twig' %}
+{% block email_content %}
+    <p>Dzień dobry {{ name }},</p>
+
+    <p>
+        Zapisaliśmy Cię na pływanie na Wakepark Wrocław na termin:
+    </p>
+    <h2>{{ slot.beginAt | format_datetime('short', 'short', locale='pl') }}</h2>
+
+    <p>
+        Pływanie w cenie: <b>{{ slot.price }} PLN</b>.
+    </p>
+
+    {% if slot.options | length > 0 %}
+        Zarezerwowane są również następujące opcje:
+        <ul>
+        {% for option in slot.options %}
+            <li>{{ option.name }} - {{ option.price }} PLN</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+{% endblock %}

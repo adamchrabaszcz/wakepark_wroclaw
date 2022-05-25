@@ -1,0 +1,25 @@
+{% extends 'emails/email_base.html.twig' %}
+{% block email_content %}
+
+    <p>
+        Nowa rezerwacja na pływanie o:
+        <b>{{ slot.beginAt | format_datetime('short', 'short', locale='pl')  }}</b>
+    </p>
+    <p>
+        Dla: <b>{{ user.firstName }} {{ user.surname }} (Telefon: {{ user.phone }})</b>
+    </p>
+
+    <p>
+        Pływanie w cenie: <b>{{ slot.price }} PLN</b>.
+    </p>
+
+    {% if slot.options | length > 0 %}
+        Zarezerwowane są również następujące opcje:
+        <ul>
+        {% for option in slot.options %}
+            <li>{{ option.name }} - {{ option.price }} PLN</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+{% endblock %}
